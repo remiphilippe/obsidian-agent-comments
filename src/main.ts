@@ -14,7 +14,7 @@ import {
 	THREAD_PANEL_VIEW_TYPE,
 } from "./views/thread-panel";
 import { threadStateField, setThreadsEffect, showResolvedField, setShowResolvedEffect } from "./editor/state";
-import { threadGutter, anchorHighlightPlugin } from "./editor/decorations";
+import { createThreadGutter, anchorHighlightPlugin } from "./editor/decorations";
 import { createMockSession, clearMockSession } from "./dev/mock-session";
 
 export type KnowledgeRefRenderer = (ref: string) => HTMLElement | null;
@@ -64,7 +64,10 @@ export default class AgentCommentsPlugin extends Plugin {
 		this.registerEditorExtension([
 			threadStateField,
 			showResolvedField,
-			threadGutter,
+			createThreadGutter((threadId) => {
+				void this.ensurePanelOpen();
+				this.threadPanel?.selectThread(threadId);
+			}),
 			anchorHighlightPlugin,
 		]);
 

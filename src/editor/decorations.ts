@@ -54,48 +54,84 @@ class ThreadGutterMarker extends GutterMarker {
 
 // --- Gutter Extension ---
 
-export const threadGutter = gutter({
-	class: "agent-comments-gutter",
-	markers(view) {
-		const state = view.state.field(threadStateField, false);
-		if (!state) {
-			return new RangeSetBuilder<GutterMarker>().finish();
-		}
-
-		const showResolved = view.state.field(showResolvedField, false) ?? false;
-		const builder = new RangeSetBuilder<GutterMarker>();
-		const doc = view.state.doc;
-
-		// Collect markers per line, sorted by position
-		const lineMarkers: { line: number; marker: GutterMarker }[] = [];
-
-		for (const thread of state.threads) {
-			if (thread.status === "resolved" && !showResolved) continue;
-			const { startOffset } = thread.anchor;
-			if (startOffset >= 0 && startOffset <= doc.length) {
-				const line = doc.lineAt(startOffset);
-				lineMarkers.push({
-					line: line.from,
-					marker: new ThreadGutterMarker(thread.status, thread.messages.length),
-				});
+/**
+ * Create the thread gutter extension.
+ * @param onThreadClick Called when user clicks a gutter dot — receives the thread ID to reveal.
+ */
+export function createThreadGutter(onThreadClick: (threadId: string) => void) {
+	return gutter({
+		class: "agent-comments-gutter",
+		markers(view) {
+			const state = view.state.field(threadStateField, false);
+			if (!state) {
+				return new RangeSetBuilder<GutterMarker>().finish();
 			}
-		}
 
-		// Sort by position (required for RangeSetBuilder)
-		lineMarkers.sort((a, b) => a.line - b.line);
+			const showResolved = view.state.field(showResolvedField, false) ?? false;
+			const builder = new RangeSetBuilder<GutterMarker>();
+			const doc = view.state.doc;
 
-		// Deduplicate — one marker per line (prefer open over resolved)
-		const seen = new Set<number>();
-		for (const { line, marker } of lineMarkers) {
-			if (!seen.has(line)) {
-				seen.add(line);
-				builder.add(line, line, marker);
+			// Collect markers per line, sorted by position
+			const lineMarkers: { line: number; marker: GutterMarker }[] = [];
+
+			for (const thread of state.threads) {
+				if (thread.status === "resolved" && !showResolved) continue;
+				const { startOffset } = thread.anchor;
+				if (startOffset >= 0 && startOffset <= doc.length) {
+					const line = doc.lineAt(startOffset);
+					lineMarkers.push({
+						line: line.from,
+						marker: new ThreadGutterMarker(thread.status, thread.messages.length),
+					});
+				}
 			}
-		}
 
-		return builder.finish();
-	},
-});
+			// Sort by position (required for RangeSetBuilder)
+			lineMarkers.sort((a, b) => a.line - b.line);
+
+			// Deduplicate — one marker per line (prefer open over resolved)
+			const seen = new Set<number>();
+			for (const { line, marker } of lineMarkers) {
+				if (!seen.has(line)) {
+					seen.add(line);
+					builder.add(line, line, marker);
+				}
+			}
+
+			return builder.finish();
+		},
+		domEventHandlers: {
+			click(view, line) {
+				const state = view.state.field(threadStateField, false);
+				if (!state) return false;
+
+				const showResolved = view.state.field(showResolvedField, false) ?? false;
+				const doc = view.state.doc;
+
+				// Find threads anchored to this line — prefer open over resolved
+				let bestThread: CommentThread | null = null;
+				for (const thread of state.threads) {
+					if (thread.status === "resolved" && !showResolved) continue;
+					const { startOffset } = thread.anchor;
+					if (startOffset >= 0 && startOffset <= doc.length) {
+						const threadLine = doc.lineAt(startOffset);
+						if (threadLine.from === line.from) {
+							if (!bestThread || (bestThread.status === "resolved" && thread.status === "open")) {
+								bestThread = thread;
+							}
+						}
+					}
+				}
+
+				if (bestThread) {
+					onThreadClick(bestThread.id);
+					return true;
+				}
+				return false;
+			},
+		},
+	});
+}
 
 // --- Anchor Highlight Decorations ---
 
