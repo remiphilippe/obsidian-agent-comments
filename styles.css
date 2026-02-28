@@ -1,0 +1,630 @@
+/* Agent Comments — Plugin Styles
+ *
+ * All custom properties reference Obsidian theme variables.
+ * No hard-coded colors — adapts to any theme (light/dark).
+ *
+ * Styles are scoped to markdown views only to prevent
+ * leaking into Canvas/Kanban views (CriticMarkup #21).
+ */
+
+/* --- Gutter --- */
+
+.markdown-source-view .agent-comments-gutter {
+	width: 12px;
+	flex-shrink: 0;
+}
+
+.markdown-source-view .agent-comments-gutter-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	margin: 4px 2px;
+	cursor: pointer;
+}
+
+.markdown-source-view .agent-comments-gutter-open {
+	background-color: var(--interactive-accent);
+}
+
+.markdown-source-view .agent-comments-gutter-resolved {
+	background-color: var(--text-faint);
+	opacity: 0.5;
+}
+
+/* --- Anchor Highlights --- */
+
+.markdown-source-view .agent-comments-anchor-highlight {
+	background-color: var(--text-highlight-bg);
+	border-radius: 2px;
+}
+
+.markdown-source-view .agent-comments-anchor-active {
+	background-color: var(--interactive-accent);
+	opacity: 0.15;
+}
+
+/* --- Suggestion Widget --- */
+
+.agent-comments-suggestion {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 4px;
+	border-radius: var(--radius-s);
+	background-color: var(--background-secondary);
+	font-size: var(--font-smaller);
+	vertical-align: baseline;
+}
+
+.agent-comments-suggestion-diff {
+	display: inline;
+}
+
+.agent-comments-diff-delete {
+	color: var(--text-error);
+	text-decoration: line-through;
+	background-color: rgba(var(--color-red-rgb), 0.1);
+}
+
+.agent-comments-diff-insert {
+	color: var(--text-success);
+	background-color: rgba(var(--color-green-rgb), 0.1);
+}
+
+.agent-comments-diff-equal {
+	color: var(--text-muted);
+}
+
+.agent-comments-suggestion-accept,
+.agent-comments-suggestion-reject {
+	padding: 1px 6px;
+	border: none;
+	border-radius: var(--radius-s);
+	cursor: pointer;
+	font-size: var(--font-smallest);
+	font-family: var(--font-interface);
+}
+
+.agent-comments-suggestion-accept {
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+.agent-comments-suggestion-accept:hover {
+	background-color: var(--interactive-accent-hover);
+}
+
+.agent-comments-suggestion-reject {
+	background-color: var(--background-modifier-border);
+	color: var(--text-muted);
+}
+
+.agent-comments-suggestion-reject:hover {
+	background-color: var(--background-modifier-border-hover);
+}
+
+/* --- Thread Panel (Sidebar) --- */
+
+.agent-comments-thread-panel {
+	padding: var(--size-4-2);
+}
+
+.agent-comments-thread-panel-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: var(--size-4-2) 0;
+	border-bottom: 1px solid var(--background-modifier-border);
+	margin-bottom: var(--size-4-2);
+}
+
+.agent-comments-thread-panel-title {
+	font-weight: var(--font-semibold);
+	font-size: var(--font-ui-medium);
+}
+
+.agent-comments-status-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	display: inline-block;
+	margin-left: var(--size-4-1);
+}
+
+.agent-comments-status-connected {
+	background-color: var(--color-green);
+}
+
+.agent-comments-status-connecting {
+	background-color: var(--color-yellow);
+}
+
+.agent-comments-status-offline {
+	background-color: var(--text-faint);
+}
+
+.agent-comments-status-error {
+	background-color: var(--color-red);
+}
+
+/* --- Thread List Items --- */
+
+.agent-comments-thread-item {
+	padding: var(--size-4-2);
+	border-bottom: 1px solid var(--background-modifier-border);
+	cursor: pointer;
+	border-radius: var(--radius-s);
+}
+
+.agent-comments-thread-item:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.agent-comments-thread-item-anchor {
+	font-size: var(--font-smaller);
+	color: var(--text-muted);
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	margin-bottom: var(--size-4-1);
+}
+
+.agent-comments-thread-item-meta {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-2);
+	font-size: var(--font-smallest);
+	color: var(--text-faint);
+}
+
+.agent-comments-thread-status-badge {
+	padding: 1px 6px;
+	border-radius: var(--radius-s);
+	font-size: var(--font-smallest);
+	font-weight: var(--font-semibold);
+}
+
+.agent-comments-badge-open {
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+.agent-comments-badge-resolved {
+	background-color: var(--background-modifier-border);
+	color: var(--text-muted);
+}
+
+/* --- Thread Detail View --- */
+
+.agent-comments-thread-detail {
+	padding: var(--size-4-2);
+}
+
+.agent-comments-thread-detail-header {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-2);
+	margin-bottom: var(--size-4-2);
+}
+
+.agent-comments-back-button {
+	cursor: pointer;
+	padding: var(--size-4-1);
+	border-radius: var(--radius-s);
+	background: none;
+	border: none;
+	color: var(--text-muted);
+}
+
+.agent-comments-back-button:hover {
+	background-color: var(--background-modifier-hover);
+}
+
+.agent-comments-anchor-quote {
+	padding: var(--size-4-2);
+	border-left: 3px solid var(--interactive-accent);
+	background-color: var(--background-secondary);
+	margin-bottom: var(--size-4-3);
+	font-size: var(--font-smaller);
+	color: var(--text-muted);
+}
+
+.agent-comments-message {
+	padding: var(--size-4-2);
+	margin-bottom: var(--size-4-2);
+	border-radius: var(--radius-s);
+}
+
+.agent-comments-message-header {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-1);
+	margin-bottom: var(--size-4-1);
+	font-size: var(--font-smaller);
+}
+
+.agent-comments-author-badge {
+	padding: 1px 4px;
+	border-radius: var(--radius-s);
+	font-size: var(--font-smallest);
+	font-weight: var(--font-semibold);
+}
+
+.agent-comments-author-human {
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+}
+
+.agent-comments-author-agent {
+	background-color: var(--background-modifier-border);
+	color: var(--text-normal);
+}
+
+.agent-comments-message-content {
+	font-size: var(--font-ui-small);
+	line-height: var(--line-height-normal);
+}
+
+.agent-comments-knowledge-ref {
+	display: inline-block;
+	padding: 1px 6px;
+	border-radius: var(--radius-s);
+	background-color: var(--background-modifier-border);
+	font-size: var(--font-smallest);
+	color: var(--text-muted);
+	margin: 2px 2px 2px 0;
+}
+
+/* --- Message Composer --- */
+
+.agent-comments-composer {
+	display: flex;
+	gap: var(--size-4-1);
+	padding: var(--size-4-2) 0;
+	border-top: 1px solid var(--background-modifier-border);
+	margin-top: var(--size-4-2);
+}
+
+.agent-comments-composer-input {
+	flex: 1;
+	resize: vertical;
+	min-height: 60px;
+	padding: var(--size-4-2);
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+	font-family: var(--font-interface);
+	font-size: var(--font-ui-small);
+}
+
+.agent-comments-composer-input:focus {
+	border-color: var(--interactive-accent);
+	outline: none;
+}
+
+.agent-comments-composer-send {
+	align-self: flex-end;
+	padding: var(--size-4-1) var(--size-4-3);
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+	border: none;
+	border-radius: var(--radius-s);
+	cursor: pointer;
+	font-size: var(--font-ui-small);
+}
+
+.agent-comments-composer-send:hover {
+	background-color: var(--interactive-accent-hover);
+}
+
+/* --- Orphaned Threads --- */
+
+.agent-comments-orphaned-section {
+	margin-top: var(--size-4-3);
+	padding-top: var(--size-4-2);
+	border-top: 1px solid var(--background-modifier-border);
+}
+
+.agent-comments-orphaned-header {
+	font-size: var(--font-smaller);
+	color: var(--text-warning);
+	font-weight: var(--font-semibold);
+	margin-bottom: var(--size-4-2);
+}
+
+.agent-comments-orphaned-item {
+	padding: var(--size-4-2);
+	background-color: var(--background-secondary);
+	border-radius: var(--radius-s);
+	margin-bottom: var(--size-4-1);
+}
+
+.agent-comments-orphaned-actions {
+	display: flex;
+	gap: var(--size-4-1);
+	margin-top: var(--size-4-1);
+}
+
+/* --- Bulk Actions --- */
+
+.agent-comments-bulk-actions {
+	display: flex;
+	gap: var(--size-4-1);
+	padding: var(--size-4-1) 0;
+}
+
+.agent-comments-thread-counts {
+	font-size: var(--font-smallest);
+	color: var(--text-faint);
+}
+
+/* --- Header Layout (M8.2) --- */
+
+.agent-comments-header-left {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-1);
+}
+
+.agent-comments-header-right {
+	display: flex;
+	align-items: center;
+	gap: var(--size-4-1);
+}
+
+.agent-comments-resolve-all-btn {
+	padding: 2px 8px;
+	border: none;
+	border-radius: var(--radius-s);
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+	cursor: pointer;
+	font-size: var(--font-smallest);
+	font-family: var(--font-interface);
+}
+
+.agent-comments-resolve-all-btn:hover {
+	background-color: var(--interactive-accent-hover);
+}
+
+/* --- Filter Bar (M8.3) --- */
+
+.agent-comments-filter-bar {
+	display: flex;
+	gap: var(--size-4-1);
+	padding: var(--size-4-1) 0;
+	margin-bottom: var(--size-4-1);
+}
+
+.agent-comments-filter-select,
+.agent-comments-sort-select {
+	padding: 2px 4px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+	font-size: var(--font-smallest);
+	font-family: var(--font-interface);
+}
+
+.agent-comments-search-input {
+	flex: 1;
+	padding: 2px 6px;
+	border: 1px solid var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	background-color: var(--background-primary);
+	color: var(--text-normal);
+	font-size: var(--font-smallest);
+	font-family: var(--font-interface);
+}
+
+.agent-comments-search-input:focus {
+	border-color: var(--interactive-accent);
+	outline: none;
+}
+
+/* --- Empty State --- */
+
+.agent-comments-empty {
+	padding: var(--size-4-3);
+	text-align: center;
+	color: var(--text-faint);
+	font-size: var(--font-smaller);
+}
+
+/* --- Reading Mode Badges (M8.4) --- */
+
+.agent-comments-reading-anchor {
+	position: relative;
+}
+
+.agent-comments-reading-badge {
+	position: absolute;
+	right: -24px;
+	top: 0;
+	width: 18px;
+	height: 18px;
+	border-radius: 50%;
+	background-color: var(--interactive-accent);
+	color: var(--text-on-accent);
+	font-size: 10px;
+	font-weight: var(--font-semibold);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	line-height: 1;
+}
+
+.agent-comments-reading-badge:hover {
+	background-color: var(--interactive-accent-hover);
+}
+
+/* --- Knowledge Refs Container (M8.5) --- */
+
+.agent-comments-knowledge-refs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 2px;
+	margin-top: var(--size-4-1);
+}
+
+/* --- Show More Button (M10.1) --- */
+
+.agent-comments-show-more-btn {
+	display: block;
+	width: 100%;
+	padding: var(--size-4-2);
+	margin: var(--size-4-1) 0;
+	border: 1px dashed var(--background-modifier-border);
+	border-radius: var(--radius-s);
+	background: none;
+	color: var(--text-muted);
+	font-size: var(--font-smaller);
+	cursor: pointer;
+	text-align: center;
+}
+
+.agent-comments-show-more-btn:hover {
+	background-color: var(--background-modifier-hover);
+	color: var(--text-normal);
+}
+
+/* --- Thread Item Focus (M10.2 Accessibility) --- */
+
+.agent-comments-thread-item:focus-visible {
+	outline: 2px solid var(--interactive-accent);
+	outline-offset: -2px;
+}
+
+/* --- Connection Status: disconnected --- */
+
+.agent-comments-status-disconnected {
+	background-color: var(--text-faint);
+}
+
+/* --- Mobile Overrides (M9) --- */
+
+.is-mobile .agent-comments-thread-panel {
+	padding: var(--size-4-3);
+}
+
+/* Larger touch targets on mobile */
+.is-mobile .agent-comments-thread-item {
+	padding: var(--size-4-3);
+	min-height: 44px;
+}
+
+.is-mobile .agent-comments-suggestion-accept,
+.is-mobile .agent-comments-suggestion-reject {
+	padding: 6px 12px;
+	font-size: var(--font-ui-small);
+	min-height: 36px;
+}
+
+.is-mobile .agent-comments-back-button {
+	padding: var(--size-4-2);
+	min-width: 36px;
+	min-height: 36px;
+}
+
+.is-mobile .agent-comments-composer-send {
+	padding: var(--size-4-2) var(--size-4-4);
+	min-height: 36px;
+}
+
+.is-mobile .agent-comments-resolve-all-btn {
+	padding: 6px 12px;
+	min-height: 36px;
+}
+
+/* Mobile suggestion card layout — side-by-side Original/Suggested blocks */
+
+.is-mobile .agent-comments-suggestion {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: var(--size-4-2);
+	padding: var(--size-4-2);
+}
+
+.agent-comments-suggestion-card {
+	display: none;
+}
+
+.is-mobile .agent-comments-suggestion-card {
+	display: block;
+	padding: var(--size-4-2);
+	border-radius: var(--radius-s);
+	font-size: var(--font-ui-small);
+}
+
+.is-mobile .agent-comments-suggestion-diff {
+	display: none;
+}
+
+.agent-comments-suggestion-card-original {
+	background-color: rgba(var(--color-red-rgb), 0.1);
+	border-left: 3px solid var(--text-error);
+}
+
+.agent-comments-suggestion-card-suggested {
+	background-color: rgba(var(--color-green-rgb), 0.1);
+	border-left: 3px solid var(--text-success);
+}
+
+.agent-comments-suggestion-card-label {
+	font-size: var(--font-smallest);
+	font-weight: var(--font-semibold);
+	color: var(--text-muted);
+	margin-bottom: var(--size-4-1);
+}
+
+/* Mobile filter bar — stack vertically */
+
+.is-mobile .agent-comments-filter-bar {
+	flex-direction: column;
+	gap: var(--size-4-2);
+}
+
+.is-mobile .agent-comments-filter-select,
+.is-mobile .agent-comments-sort-select,
+.is-mobile .agent-comments-search-input {
+	padding: 6px 8px;
+	font-size: var(--font-ui-small);
+	min-height: 36px;
+}
+
+/* Mobile bottom sheet (Fix 2) — panel collapses to bottom sheet on mobile */
+
+.is-mobile .agent-comments-bottom-sheet {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	max-height: 60vh;
+	overflow-y: auto;
+	border-top-left-radius: var(--radius-m);
+	border-top-right-radius: var(--radius-m);
+	box-shadow: 0 -2px 16px rgba(0, 0, 0, 0.15);
+	background-color: var(--background-primary);
+	z-index: var(--layer-popover);
+}
+
+.is-mobile .agent-comments-bottom-sheet::before {
+	content: "";
+	display: block;
+	width: 36px;
+	height: 4px;
+	border-radius: 2px;
+	background-color: var(--background-modifier-border);
+	margin: 8px auto 4px;
+}
+
+/* Mobile anchor highlight (M9.2) — used instead of gutter dots */
+
+.is-mobile .markdown-source-view .agent-comments-anchor-highlight {
+	background-color: rgba(var(--interactive-accent-rgb, 99, 135, 255), 0.15);
+	border-bottom: 2px solid var(--interactive-accent);
+}
