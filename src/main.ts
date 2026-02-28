@@ -15,6 +15,7 @@ import {
 } from "./views/thread-panel";
 import { threadStateField, setThreadsEffect, showResolvedField, setShowResolvedEffect } from "./editor/state";
 import { threadGutter, anchorHighlightPlugin } from "./editor/decorations";
+import { createMockSession, clearMockSession } from "./dev/mock-session";
 
 export type KnowledgeRefRenderer = (ref: string) => HTMLElement | null;
 
@@ -141,6 +142,53 @@ export default class AgentCommentsPlugin extends Plugin {
 					endOffset: section.endOffset,
 					sectionHeading: heading,
 				});
+			},
+		});
+
+		// Dev commands: Mock session for testing
+		this.addCommand({
+			id: "create-mock-session",
+			// eslint-disable-next-line obsidianmd/ui/sentence-case -- dev command prefix
+			name: "Dev: Create mock session",
+			callback: () => {
+				const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+				if (!view) {
+					new Notice("Open a markdown file first."); // eslint-disable-line obsidianmd/ui/sentence-case -- sentence starts with capital
+					return;
+				}
+				void createMockSession(view, this.storage)
+					.then((result) => {
+						new Notice(`Created ${result.threadCount} mock threads.`);
+						void this.onFileOpen(view.file!);
+					})
+					.catch((err: unknown) => {
+						new Notice(
+							`Mock session failed: ${err instanceof Error ? err.message : "Unknown error"}`,
+						);
+					});
+			},
+		});
+
+		this.addCommand({
+			id: "clear-mock-session",
+			// eslint-disable-next-line obsidianmd/ui/sentence-case -- dev command prefix
+			name: "Dev: Clear mock session",
+			callback: () => {
+				const view = this.app.workspace.getActiveViewOfType(MarkdownView);
+				if (!view?.file) {
+					new Notice("Open a markdown file first."); // eslint-disable-line obsidianmd/ui/sentence-case -- sentence starts with capital
+					return;
+				}
+				void clearMockSession(view.file, this.storage)
+					.then(() => {
+						new Notice("Cleared all threads from this document.");
+						void this.onFileOpen(view.file!);
+					})
+					.catch((err: unknown) => {
+						new Notice(
+							`Clear failed: ${err instanceof Error ? err.message : "Unknown error"}`,
+						);
+					});
 			},
 		});
 
@@ -297,6 +345,14 @@ export default class AgentCommentsPlugin extends Plugin {
 		if (activeFile) {
 			void this.storage.save(activeFile, threads);
 		}
+	}
+
+	/**
+	 * Called by ThreadPanelView.onOpen() to populate the panel
+	 * with the current thread data.
+	 */
+	notifyPanelOpened(): void {
+		this.refreshPanel();
 	}
 
 	// --- Public API for thread operations (called by views) ---

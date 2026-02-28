@@ -48,6 +48,10 @@ export class ThreadPanelView extends ItemView {
 	}
 
 	async onOpen(): Promise<void> {
+		// Request current thread data from the plugin.
+		// The panel may open after threads were already loaded
+		// (e.g., user opens panel after navigating to a file).
+		this.plugin.notifyPanelOpened();
 		this.render();
 	}
 
